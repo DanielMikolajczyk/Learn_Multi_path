@@ -60,7 +60,8 @@ class ShortestForwarding(app_manager.RyuApp):
 	WEIGHT_MODEL = {'hop': 'weight', 'bw': 'bw', 'hop_bw' : 'hop_bw'}
 
 	def __init__(self, *args, **kwargs):
-		self.my_logger = logging.getLogger("Results.txt")
+		self.my_logger = logging.getLogger('my_logger')
+		self.my_logger = logging.setLevel(logging.DEBUG)
 
 		super(ShortestForwarding, self).__init__(*args, **kwargs)
 		self.name = "shortest_forwarding"
