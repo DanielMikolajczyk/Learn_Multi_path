@@ -62,6 +62,9 @@ class ShortestForwarding(app_manager.RyuApp):
 	def __init__(self, *args, **kwargs):
 		self.my_logger = logging.getLogger('my_logger')
 		self.my_logger = logging.setLevel(logging.DEBUG)
+		self.file_handler = logging.FileHandler('results.txt')
+		self.file_handler.setLevel(logging.DEBUG)
+		self.my_logger.addHandler(self.file_handler)
 
 		super(ShortestForwarding, self).__init__(*args, **kwargs)
 		self.name = "shortest_forwarding"
