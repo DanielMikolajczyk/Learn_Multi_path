@@ -261,18 +261,9 @@ class ShortestForwarding(app_manager.RyuApp):
 			# Tu pewnie jest tablica najkrotszych sciezek
 			best_hop_paths = shortest_paths.get(src).get(dst)
 			# Tu powinna być lista najlepszych bandwith
-			best_bw_paths = []
-			# try:
-			# 	best_bw_paths = self.monitor.best_paths.get(src).get(dst)
-			# except:
-			best_bw_paths = self.monitor.get_best_path_by_bw_list(graph, shortest_paths)
-			print(best_bw_paths.get(src).get(dst))
-			return best_bw_paths.get(src).get(dst)[0]["path"]
-			#Tutaj trzeba by jakoś uwzględnić te wagi (BEST_HOP_WEIGHT, BEST_BW_WEIGHT)
-			result = [5, 4, 3, 2, 1]
-			for index, bw_path in enumerate(best_bw_paths):
-				result[index] += 5 - index
-			return best_hop_paths[result.index(max(result))]
+			our_weigths = (BEST_HOP_WEIGHT, BEST_BW_WEIGHT)
+			best_bw_paths = self.monitor.get_best_path_by_bw_list(graph, shortest_paths, our_weigths)
+			return best_bw_paths.get(src).get(dst)
 		else:
 			pass
 
