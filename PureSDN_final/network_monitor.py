@@ -20,6 +20,8 @@ from __future__ import division
 import copy
 from operator import attrgetter
 
+import sys
+
 from ryu import cfg
 from ryu.base import app_manager
 from ryu.base.app_manager import lookup_service_brick
@@ -314,6 +316,8 @@ class NetworkMonitor(app_manager.RyuApp):
 			Note: This function is called in EFattree module.
 		"""
 		best_paths = copy.deepcopy(paths)
+		print(best_paths)
+		sys.exit(0)
 
 		for src in paths:
 			for dst in paths[src]:
