@@ -26,4 +26,7 @@ MONITOR_PERIOD = 5   # For monitoring traffic
 
 TOSHOW = True	   # For showing information in terminal
 
-MAX_CAPACITY = 10000   # Max capacity of link, Kbit/s
+MAX_CAPACITY = 10000000   # Max capacity of link, 10 Mbit/s
+
+HOPS_WEIGHT = 10
+BANDWITH_WEIGHT = 0.000001

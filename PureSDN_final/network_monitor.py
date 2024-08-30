@@ -306,6 +306,37 @@ class NetworkMonitor(app_manager.RyuApp):
 		self.capabilities = capabilities
 		self.best_paths = best_paths
 		return capabilities, best_paths
+	
+	def get_best_path_by_bw_list(self, graph, paths):
+		"""
+			Get best path by comparing paths.
+			Note: This function is called in EFattree module.
+		"""
+		best_paths = copy.deepcopy(paths)
+
+		for src in paths:
+			for dst in paths[src]:
+				if src == dst:
+					best_paths[src][src] = [src]
+				else:
+					value_of_best_paths = []
+					for path in paths[src][dst]:
+						bandwith = self.get_min_bw_of_links(graph, path, setting.MAX_CAPACITY)
+						hop_value = 1/(1+len(path)) * setting.HOPS_WEIGHT
+						bandwith_value = bandwith * setting.BANDWITH_WEIGHT
+						value_of_best_paths.append(hop_value + bandwith_value)
+					max_value = 0
+					index_of_best_path = 0
+					for index, value in enumerate(value_of_best_paths):
+						if value > max_value:
+							max_value = value
+							index_of_best_path = index
+
+					best_paths[src][dst] = paths[src][dst][index_of_best_path]
+
+		self.best_paths = best_paths
+		return best_paths
+
 
 	def create_bw_graph(self, bw_dict):
 		"""
