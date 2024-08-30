@@ -64,7 +64,7 @@ class ShortestForwarding(app_manager.RyuApp):
 		self.awareness = kwargs["network_awareness"]
 		self.monitor = kwargs["network_monitor"]
 		self.datapaths = {}
-		self.weight = self.WEIGHT_MODEL["hop_bw"]
+		self.weight = self.WEIGHT_MODEL[CONF.weight]
 
 	@set_ev_cls(ofp_event.EventOFPStateChange, [MAIN_DISPATCHER, DEAD_DISPATCHER])
 	def _state_change_handler(self, ev):
@@ -253,6 +253,9 @@ class ShortestForwarding(app_manager.RyuApp):
 				# result = (capabilities, best_paths)
 				paths = result[1]
 				best_path = paths.get(src).get(dst)
+				print("\n\n\nPRINTING BEST PATH !!!!!!!!!!")
+				print(best_path)
+				print("PRINTING BEST PATH !!!!!!!!!!\n\n\n")
 				return best_path
 		elif weight == self.WEIGHT_MODEL['hop_bw']:
 			print("Nasza metoda hop bandwith")
@@ -263,7 +266,11 @@ class ShortestForwarding(app_manager.RyuApp):
 			# Tu powinna być lista najlepszych bandwith
 			our_weigths = (BEST_HOP_WEIGHT, BEST_BW_WEIGHT)
 			best_bw_paths = self.monitor.get_best_path_by_bw_list(graph, shortest_paths, our_weigths)
-			return best_bw_paths.get(src).get(dst)
+			best_path = best_bw_paths.get(src).get(dst)
+			print("\n\n\nPRINTING BEST PATH MOJE BW !!!!!!!!!!")
+			print(best_path)
+			print("PRINTING BEST PATH MOJE BW !!!!!!!!!!\n\n\n")
+			return best_path
 		else:
 			pass
 
