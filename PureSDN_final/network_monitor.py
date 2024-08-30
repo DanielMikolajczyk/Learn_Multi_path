@@ -295,6 +295,7 @@ class NetworkMonitor(app_manager.RyuApp):
 					for path in paths[src][dst]:
 						min_bw = setting.MAX_CAPACITY
 						min_bw = self.get_min_bw_of_links(graph, path, min_bw)
+						#sprawdź ilość skoków
 						if min_bw > max_bw_of_paths:
 							max_bw_of_paths = min_bw
 							best_path = path
@@ -306,6 +307,45 @@ class NetworkMonitor(app_manager.RyuApp):
 		self.capabilities = capabilities
 		self.best_paths = best_paths
 		return capabilities, best_paths
+	
+	def get_best_path_by_bw_list(self, graph, paths):
+		"""
+			Get best path by comparing paths.
+			Note: This function is called in EFattree module.
+		"""
+		best_paths = copy.deepcopy(paths)
+
+		for src in paths:
+			for dst in paths[src]:
+				if src == dst:
+					best_paths[src][src] = [{
+						"path": [src],
+						"value": setting.MAX_CAPACITY
+					}]
+				else:
+					max_bw_of_paths = 0
+					min_bw = setting.MAX_CAPACITY
+					min_bw = self.get_min_bw_of_links(graph, paths[src][dst][0], min_bw)
+					best_paths = [{
+						"path": paths[src][dst][0],
+						"value": min_bw,
+					}]
+					for path in paths[src][dst][1:]:
+						min_bw = setting.MAX_CAPACITY
+						min_bw = self.get_min_bw_of_links(graph, path, min_bw)
+						
+						for index, best_path in enumerate(best_paths):
+							if min_bw > best_path["value"]:
+								best_paths.insert(index,{
+									"path": path,
+									"value": min_bw
+								})
+						else:
+							best_paths.append({
+									"path": path,
+									"value": min_bw
+								})
+		return best_paths
 
 	def create_bw_graph(self, bw_dict):
 		"""
