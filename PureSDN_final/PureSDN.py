@@ -259,18 +259,22 @@ class ShortestForwarding(app_manager.RyuApp):
 				return best_path
 		elif weight == self.WEIGHT_MODEL['hop_bw']:
 			print("Nasza metoda hop bandwith")
-			BEST_HOP_WEIGHT = 0.5
-			BEST_BW_WEIGHT = 0.5
-			# Tu pewnie jest tablica najkrotszych sciezek
-			best_hop_paths = shortest_paths.get(src).get(dst)
-			# Tu powinna być lista najlepszych bandwith
-			our_weigths = (BEST_HOP_WEIGHT, BEST_BW_WEIGHT)
-			best_bw_paths = self.monitor.get_best_path_by_bw_list(graph, shortest_paths, our_weigths)
-			best_path = best_bw_paths.get(src).get(dst)
-			print("\n\n\nPRINTING BEST PATH MOJE BW !!!!!!!!!!")
-			print(best_path)
-			print("PRINTING BEST PATH MOJE BW !!!!!!!!!!\n\n\n")
-			return best_path
+			try:
+				path = self.monitor.best_paths.get(src).get(dst)
+				return path
+			except:
+				BEST_HOP_WEIGHT = 0.5
+				BEST_BW_WEIGHT = 0.5
+				# Tu pewnie jest tablica najkrotszych sciezek
+				best_hop_paths = shortest_paths.get(src).get(dst)
+				# Tu powinna być lista najlepszych bandwith
+				our_weigths = (BEST_HOP_WEIGHT, BEST_BW_WEIGHT)
+				best_bw_paths = self.monitor.get_best_path_by_bw_list(graph, shortest_paths, our_weigths)
+				best_path = best_bw_paths.get(src).get(dst)
+				print("\n\n\nPRINTING BEST PATH MOJE BW !!!!!!!!!!")
+				print(best_path)
+				print("PRINTING BEST PATH MOJE BW !!!!!!!!!!\n\n\n")
+				return best_path
 		else:
 			pass
 
