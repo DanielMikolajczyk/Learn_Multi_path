@@ -60,7 +60,7 @@ class ShortestForwarding(app_manager.RyuApp):
 	WEIGHT_MODEL = {'hop': 'weight', 'bw': 'bw', 'hop_bw' : 'hop_bw'}
 
 	def __init__(self, *args, **kwargs):
-		self.logger = logging.getLogger(__name__)
+		self.my_logger = logging.getLogger("Results.txt")
 
 		super(ShortestForwarding, self).__init__(*args, **kwargs)
 		self.name = "shortest_forwarding"
@@ -261,12 +261,12 @@ class ShortestForwarding(app_manager.RyuApp):
 			print("Nasza metoda hop bandwith")
 			try:
 				path = self.monitor.best_paths.get(src).get(dst)
-				self.logger.info(f"Dla src: {src} i dst {dst}, wybrano ścieżkę: {path}")
+				self.my_logger.info(f"Dla src: {src} i dst {dst}, wybrano ścieżkę: {path}")
 				return path
 			except:
 				best_bw_paths = self.monitor.get_best_path_by_bw_list(graph, shortest_paths)
 				best_path = best_bw_paths.get(src).get(dst)
-				self.logger.info(f"Dla src: {src} i dst {dst}, wybrano ścieżkę: {best_path}")
+				self.my_logger.info(f"Dla src: {src} i dst {dst}, wybrano ścieżkę: {best_path}")
 				return best_path
 		else:
 			pass
