@@ -35,6 +35,7 @@ from ryu.lib.packet import ipv4
 from ryu.lib.packet import tcp
 from ryu.lib.packet import udp
 
+import logging
 import network_awareness
 import network_monitor
 import setting
@@ -59,6 +60,8 @@ class ShortestForwarding(app_manager.RyuApp):
 	WEIGHT_MODEL = {'hop': 'weight', 'bw': 'bw', 'hop_bw' : 'hop_bw'}
 
 	def __init__(self, *args, **kwargs):
+		self.logger = logging.getLogger(__name__)
+
 		super(ShortestForwarding, self).__init__(*args, **kwargs)
 		self.name = "shortest_forwarding"
 		self.awareness = kwargs["network_awareness"]
@@ -258,15 +261,12 @@ class ShortestForwarding(app_manager.RyuApp):
 			print("Nasza metoda hop bandwith")
 			try:
 				path = self.monitor.best_paths.get(src).get(dst)
+				self.logger.info(f"Dla src: {src} i dst {dst}, wybrano ścieżkę: {path}")
 				return path
 			except:
-				BEST_HOP_WEIGHT = 0.5
-				BEST_BW_WEIGHT = 0.5
-				# Tu pewnie jest tablica najkrotszych sciezek
-				# Tu powinna być lista najlepszych bandwith
-				our_weigths = (BEST_HOP_WEIGHT, BEST_BW_WEIGHT)
-				best_bw_paths = self.monitor.get_best_path_by_bw_list(graph, shortest_paths, our_weigths)
+				best_bw_paths = self.monitor.get_best_path_by_bw_list(graph, shortest_paths)
 				best_path = best_bw_paths.get(src).get(dst)
+				self.logger.info(f"Dla src: {src} i dst {dst}, wybrano ścieżkę: {best_path}")
 				return best_path
 		else:
 			pass
