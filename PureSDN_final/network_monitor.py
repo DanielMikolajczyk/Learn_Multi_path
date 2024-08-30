@@ -325,8 +325,8 @@ class NetworkMonitor(app_manager.RyuApp):
 					value_of_best_paths = []
 					for path in paths[src][dst]:
 						bandwith = self.get_min_bw_of_links(graph, path, setting.MAX_CAPACITY)
-						hop_value = 1/(1+len(path)) * CONF.HOPS_WEIGHT
-						bandwith_value = bandwith * CONF.BANDWITH_WEIGHT
+						hop_value = 1/(1+len(path)) * setting.HOPS_WEIGHT
+						bandwith_value = bandwith * setting.BANDWITH_WEIGHT
 						value_of_best_paths.append(hop_value + bandwith_value)
 					max_value = 0
 					index_of_best_path = 0
