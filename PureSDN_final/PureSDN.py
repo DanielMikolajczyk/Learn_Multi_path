@@ -64,7 +64,7 @@ class ShortestForwarding(app_manager.RyuApp):
 		self.awareness = kwargs["network_awareness"]
 		self.monitor = kwargs["network_monitor"]
 		self.datapaths = {}
-		self.weight = self.WEIGHT_MODEL["hop_bw"]
+		self.weight = self.WEIGHT_MODEL["bw"]
 
 	@set_ev_cls(ofp_event.EventOFPStateChange, [MAIN_DISPATCHER, DEAD_DISPATCHER])
 	def _state_change_handler(self, ev):
