@@ -366,15 +366,15 @@ class ShortestForwarding(app_manager.RyuApp):
 				self.send_flow_mod(datapath, flow_info, src_port, dst_port)
 
 		#  Install flow entry for the first datapath.
-		print("link_to_port ",link_to_port)#," path[0] ", path[0], " path[1] ",path[1])
-		print("path = ",path)
+		# print("link_to_port ",link_to_port)#," path[0] ", path[0], " path[1] ",path[1])
+		# print("path = ",path)
 		if(len(path) <2):
-			print("self.awareness.access",self.awareness.access_table)     
+			# print("self.awareness.access",self.awareness.access_table)     
 			for sw in sorted(self.awareness.access_table.keys()):
 				ip_dst_local = self.awareness.access_table[sw][0]
 				sw_id_local = sw[0]
 				port_local = sw[1]
-				print("ip ", ip_dst_local ," is located at switch ",sw_id_local," at port ",port_local)
+				# print("ip ", ip_dst_local ," is located at switch ",sw_id_local," at port ",port_local)
 				parser = first_dp.ofproto_parser
 				match_ip = parser.OFPMatch(
                             eth_type=0x0800, 
@@ -462,10 +462,10 @@ class ShortestForwarding(app_manager.RyuApp):
 						L4_Proto = 'UDP'
 					else:
 						pass
-					self.logger.info("[PATH]%s<-->%s(%s Port:%d): %s" % (ip_src, ip_dst, L4_Proto, L4_port, path))
+					# self.logger.info("[PATH]%s<-->%s(%s Port:%d): %s" % (ip_src, ip_dst, L4_Proto, L4_port, path))
 					flow_info = (eth_type, ip_src, ip_dst, in_port, ip_proto, Flag, L4_port)
 				else:
-					self.logger.info("[PATH]%s<-->%s: %s" % (ip_src, ip_dst, path))
+					# self.logger.info("[PATH]%s<-->%s: %s" % (ip_src, ip_dst, path))
 					flow_info = (eth_type, ip_src, ip_dst, in_port)
 				# Install flow entries to datapaths along the path.
 				self.install_flow(self.datapaths,
